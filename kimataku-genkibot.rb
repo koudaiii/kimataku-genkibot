@@ -71,10 +71,8 @@ stream.on_timeline_status do |status|
     message = '@%s 社畜力がぐーんとアップしました' % status.user.screen_name
   end
   begin
-    tweet = rest.update("#{message}")
-    #tweet = rest.update(message, {
-    #  :in_reply_to_status_id => status.id,
-    #})
+    #tweet = rest.update("#{message}")
+    tweet = rest.update("#{message}", in_reply_to_status_id: status.id)
     if tweet
       log.info('tweeted: %s' % tweet.text)
     end
