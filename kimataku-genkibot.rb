@@ -42,7 +42,7 @@ stream.on_timeline_status do |status|
     message = '@%s ' % status.user.screen_name
     message += reply_text(status.text)
     log.info('dialog to @%s : %s' % [status.user.screen_name, message])
-  else
+  elsif status.user.screen_name != "kimataku_bot"
     shinpai = '@%s ' % status.user.screen_name
     case status.text
     when /https?:\/\//
@@ -73,6 +73,7 @@ stream.on_timeline_status do |status|
     if rand < (status.user.screen_name == 'kimataku' ? 0.01 : 0.0001)
       message = '@%s 社畜力がぐーんとアップしました' % status.user.screen_name
     end
+  else
   end
 
   begin
