@@ -37,12 +37,13 @@ stream.on_timeline_status do |status|
   log.info('timeline: %s' % ["#{Time.now}"])
   log.info('@%s said : %s' % [status.user.screen_name, status.text])
   next if status.retweet?
+  next if status.user.screen_name == "kimataku_bot"
   if status.reply? && status.user.screen_name != "kimataku_bot"
     log.info('reply to @%s said : %s' % [status.user.screen_name, status.text])
     message = '@%s ' % status.user.screen_name
     message += reply_text(status.text)
     log.info('dialog to @%s : %s' % [status.user.screen_name, message])
-  elsif status.user.screen_name != "kimataku_bot"
+  else
     shinpai = '@%s ' % status.user.screen_name
     case status.text
     when /https?:\/\//
@@ -73,7 +74,6 @@ stream.on_timeline_status do |status|
     if rand < (status.user.screen_name == 'kimataku' ? 0.01 : 0.0001)
       message = '@%s 社畜力がぐーんとアップしました' % status.user.screen_name
     end
-  else
   end
 
   begin
