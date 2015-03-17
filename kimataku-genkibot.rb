@@ -38,15 +38,17 @@ end
 stream.on_timeline_status do |status|
   log.info('timeline: %s' % ["#{Time.now}"])
   log.info('@%s said : %s' % [status.user.screen_name, status.text])
-  next if status.retweet?
-  next if status.user.screen_name == "kimataku_bot"
+  next if status.retweet? # RTは無視する
+  next if status.user.screen_name == "kimataku_bot" #本人からの投稿は無視する
+  #本人関係なく会話のやりとりを取ってくる仕様のため自分のアカウント名があったら反応する
   if status.reply? && /kimataku_bot/ =~ status.text
     log.info('reply to @%s said : %s' % [status.user.screen_name, status.text])
-    message = '@%s ' % status.user.screen_name
+    message = '@%s ' % status.user.screen_name #返信先を控える
+    #アカウント名が入ると上手く会話をしてくれないようなので先頭のアカウント名を削除
     text = status.text.split(" ", 2)[1]
     message += reply_text(text)
     log.info('dialog to @%s : %s' % [status.user.screen_name, message])
-  else
+  else #単純にTL上に元気ない人がいたらCatchする
     shinpai = '@%s ' % status.user.screen_name
     case status.text
     when /https?:\/\//
@@ -97,8 +99,8 @@ def reply_text(text="")
 
   body = {}
   body['utt'] = text
-  body['t'] = 20
-  body['context'] = @context
+  body['t'] = 20 #関西弁モード
+  body['context'] = @context #前回の会話となるIDを一緒に送る
   puts "context id: #{@context},text: #{text}"
   request = Net::HTTP::Post.new(uri.request_uri, {'Content-Type' =>'application/json'})
   request.body = body.to_json
