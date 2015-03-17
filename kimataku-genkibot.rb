@@ -25,6 +25,8 @@ TweetStream.configure do |config|
 end
 stream = TweetStream::Client.new
 
+context=""
+
 log.info('Working up to save the world... %s' % ["#{Time.now}"])
 log.info('Listening... %s' % ["#{Time.now}"])
 
@@ -38,7 +40,7 @@ stream.on_timeline_status do |status|
   log.info('@%s said : %s' % [status.user.screen_name, status.text])
   next if status.retweet?
   next if status.user.screen_name == "kimataku_bot"
-  if status.reply? && status.user.screen_name != "kimataku_bot"
+  if status.reply? && /kimataku_bot/ =~ status.text
     log.info('reply to @%s said : %s' % [status.user.screen_name, status.text])
     message = '@%s ' % status.user.screen_name
     message += reply_text(status.text)
@@ -95,12 +97,16 @@ def reply_text(text="")
   body = {}
   body['utt'] = text
   body['t'] = 20
+  body['context'] = context
 
   request = Net::HTTP::Post.new(uri.request_uri, {'Content-Type' =>'application/json'})
   request.body = body.to_json
   response = nil
   resp = http.request(request)
   response = JSON.parse(resp.body)
+
+  context = response['context']
+
   return response['utt']
 end
 stream.userstream
