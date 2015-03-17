@@ -43,7 +43,8 @@ stream.on_timeline_status do |status|
   if status.reply? && /kimataku_bot/ =~ status.text
     log.info('reply to @%s said : %s' % [status.user.screen_name, status.text])
     message = '@%s ' % status.user.screen_name
-    message += reply_text(status.text.split(" ", 2))
+    text = status.text.split(" ", 2)
+    message += reply_text(text)
     log.info('dialog to @%s : %s' % [status.user.screen_name, message])
   else
     shinpai = '@%s ' % status.user.screen_name
