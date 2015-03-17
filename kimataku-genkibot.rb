@@ -98,7 +98,7 @@ def reply_text(text="")
   body['utt'] = text
   body['t'] = 20
   body['context'] = @context
-  log.info('context id: %s text : %s' % [@context,text])
+  puts "context id: #{@context},text: #{text}"
   request = Net::HTTP::Post.new(uri.request_uri, {'Content-Type' =>'application/json'})
   request.body = body.to_json
   response = nil
