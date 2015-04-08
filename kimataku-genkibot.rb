@@ -53,7 +53,7 @@ stream.on_timeline_status do |status|
     case status.text
     when /https?:\/\//
       next
-    when /疲(?!れ(?:様|さ(?:ま|ん)))/
+    when /疲れた(?!(?:」|模様|も(?:よう)))/
       shinpai += '疲れてるの？'
     when /凹/
       shinpai += '凹んでるの？'
@@ -70,7 +70,6 @@ stream.on_timeline_status do |status|
     when /お腹痛い/
       shinpai += 'トイレ行って、'
     when /(?:。。。|orz)/
-    when /テスト/
     else
       next
     end
