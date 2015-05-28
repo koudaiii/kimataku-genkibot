@@ -108,7 +108,10 @@ def reply_text(text="")
   response = JSON.parse(resp.body)
 
   @context = response['context']
-
-  return response['utt']
+  if response['utt'].nil?
+    return response
+  else
+    return response['utt']
+  end
 end
 stream.userstream
