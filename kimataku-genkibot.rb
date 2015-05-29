@@ -109,7 +109,7 @@ def reply_text(text="")
 
   @context = response['context']
   if response['utt'].nil?
-    return response
+    return response.to_s
   else
     return response['utt']
   end
